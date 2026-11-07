@@ -1,0 +1,24 @@
+# ---- data: never commit (see source-data/README.md) ----
+source-data/*
+!source-data/README.md
+entities/
+results/
+*.xlsx
+*.xls
+*.csv
+*.geojson
+*.parquet
+*.zip
+
+# documentation of the source package that describes non-public content
+PACKAGE_OVERVIEW.md
+
+# ---- python / os / editors ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.DS_Store
+.idea/
+.vscode/

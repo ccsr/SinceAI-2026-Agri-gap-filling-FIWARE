@@ -1,0 +1,17 @@
+# Usage (from the project root):
+#   docker compose -f hestia/docker-compose.yml build
+#   docker compose -f hestia/docker-compose.yml run --rm hestia scripts/export_ccn_hestia.py --limit 50
+#   docker compose -f hestia/docker-compose.yml run --rm hestia hestia/run_hestia.py --check-terms
+#   docker compose -f hestia/docker-compose.yml run --rm hestia hestia/run_hestia.py --limit 50
+services:
+  hestia:
+    build: .
+    image: apetit-hestia-runner:0.93.4
+    volumes:
+      - ..:/work            # the project folder (results are written to results/hestia/)
+    working_dir: /work
+    environment:
+      ENABLE_DROUGHT_INDEX: "false"
+      API_URL: "https://api.hestia.earth"
+      WEB_URL: "https://www.hestia.earth"
+      API_ACCESS_TOKEN: "${HESTIA_API_TOKEN:-}"   # optional: token from a (free) HESTIA account

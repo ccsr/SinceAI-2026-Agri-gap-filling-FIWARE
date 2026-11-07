@@ -1,0 +1,142 @@
+{
+ "$schema": "http://json-schema.org/schema#",
+ "$id": "https://uri.fiware.org/ns/data-models/agrifood-lca/AgriFootprintResult/schema.json",
+ "title": "Agrifood LCA (proposal) - AgriFootprintResult",
+ "description": "Environmental footprint of one AgriCropCycle (cradle to farm gate), with method metadata so results from different calculators stay comparable.",
+ "type": "object",
+ "properties": {
+  "id": {
+   "type": "string",
+   "format": "uri"
+  },
+  "type": {
+   "type": "string",
+   "enum": [
+    "AgriFootprintResult"
+   ]
+  },
+  "name": {
+   "type": "string",
+   "description": "Property. Name."
+  },
+  "dataProvider": {
+   "type": "string",
+   "description": "Property. Source of the data."
+  },
+  "refAgriCropCycle": {
+   "type": "string",
+   "format": "uri",
+   "description": "Relationship. The AgriCropCycle assessed."
+  },
+  "hasAgriCrop": {
+   "type": "string",
+   "format": "uri",
+   "description": "Relationship. Crop (denormalised for querying)."
+  },
+  "season": {
+   "type": "integer",
+   "description": "Property. Harvest year."
+  },
+  "systemBoundary": {
+   "type": "string",
+   "description": "Property. Life-cycle stages included.",
+   "enum": [
+    "cradle-to-farm-gate",
+    "cradle-to-plant-gate",
+    "cradle-to-retail",
+    "cradle-to-grave"
+   ]
+  },
+  "calculationMethod": {
+   "type": "string",
+   "description": "Property. Models and emission factors used (e.g. 'IPCC 2019 Tier 1')."
+  },
+  "characterisation": {
+   "type": "string",
+   "description": "Property. Impact characterisation (e.g. 'IPCC AR6 GWP100')."
+  },
+  "ghgEmissionsPerArea": {
+   "type": "number",
+   "description": "Property. Greenhouse-gas emissions per hectare on the mineral-soil basis comparable to published product footprints (excl. drained peat, SOC change, LUC). Units:'kg CO2e/ha'."
+  },
+  "carbonFootprint": {
+   "type": "number",
+   "description": "Property. Carbon footprint per functional unit (sub-property functionalUnit). Units:'kg CO2e/t'."
+  },
+  "functionalUnit": {
+   "type": "string",
+   "description": "Property. Sub-property of carbonFootprint, e.g. '1 t harvested raw product'."
+  },
+  "emissionBreakdown": {
+   "type": "object",
+   "description": "Property. Emissions by source: fertiliserProduction, fieldN2O, dieselAndIrrigation, pesticideProduction, seed, liming, drainedOrganicSoil (kg CO2e/ha)."
+  },
+  "nitrogenSurplus": {
+   "type": "number",
+   "description": "Property. Field N balance (inputs incl. fixation − removal); eutrophication proxy. Units:'kg N/ha'."
+  },
+  "phosphorusSurplus": {
+   "type": "number",
+   "description": "Property. Field P balance. Units:'kg P/ha'."
+  },
+  "blueWaterFootprint": {
+   "type": "number",
+   "description": "Property. Irrigation water per tonne. Units:'m3/t'."
+  },
+  "dataOrigin": {
+   "type": "string",
+   "enum": [
+    "syntheticTruth",
+    "estimated",
+    "measured",
+    "reported"
+   ],
+   "description": "Property. Origin of the result."
+  },
+  "imputationMethod": {
+   "type": "string",
+   "description": "Property. Sub-property, only when dataOrigin=imputed. E.g. 'gradientBoosting', 'knn', 'cropRegionMedian'."
+  },
+  "imputationModel": {
+   "type": "string",
+   "description": "Property. Sub-property. Identifier/version of the model that produced the value."
+  },
+  "confidenceInterval": {
+   "type": "object",
+   "description": "Property. Sub-property. {'lower': n, 'upper': n, 'level': 0.8} for imputed/estimated values."
+  },
+  "nonFlagEmissions": {
+   "type": "number",
+   "description": "Property. Energy/industrial (non-FLAG) emissions: fertiliser and pesticide production, fuel, seed. Units:'kg CO2e/ha'."
+  },
+  "flagLandManagementEmissions": {
+   "type": "number",
+   "description": "Property. FLAG land-management emissions: field N2O, liming, drained organic soils, soil carbon losses. Units:'kg CO2e/ha'."
+  },
+  "flagLandUseChangeEmissions": {
+   "type": "number",
+   "description": "Property. FLAG direct land-use change emissions, amortised over 20 years. Units:'kg CO2e/ha'."
+  },
+  "flagRemovals": {
+   "type": "number",
+   "description": "Property. FLAG removals (soil carbon gains). Reported separately, never netted silently against emissions. Units:'kg CO2e/ha'."
+  },
+  "soilCarbonStockChange": {
+   "type": "number",
+   "description": "Property. Soil organic carbon stock change, mineral soils 0-30 cm (+ = gain). Units:'t C/ha/yr'."
+  },
+  "flagNetCarbonFootprint": {
+   "type": "number",
+   "description": "Property. (non-FLAG + FLAG emissions - removals) per functional unit; informative. Units:'kg CO2e/t'."
+  }
+ },
+ "required": [
+  "id",
+  "type",
+  "refAgriCropCycle",
+  "systemBoundary",
+  "carbonFootprint"
+ ],
+ "x-status": "proposal",
+ "x-license": "CC-BY-4.0"
+}

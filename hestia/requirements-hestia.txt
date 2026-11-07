@@ -1,0 +1,4 @@
+hestia-earth-models==0.93.4
+hestia-earth-orchestrator==0.6.20
+numpy>=1.26
+pandas>=2.1

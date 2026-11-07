@@ -1,0 +1,191 @@
+{
+ "$schema": "http://json-schema.org/schema#",
+ "$id": "https://uri.fiware.org/ns/data-models/agrifood-lca/AgriCropCycle/schema.json",
+ "title": "Agrifood LCA (proposal) - AgriCropCycle",
+ "description": "One crop grown on one AgriParcel in one season: the unit of record in a contract-growing system (ViRe-like) and the functional unit for farm-stage LCA. Complements SDM AgriParcel/AgriCrop, which describe the land and the crop but not a seasonal production record with inputs and yield.",
+ "type": "object",
+ "properties": {
+  "id": {
+   "type": "string",
+   "format": "uri"
+  },
+  "type": {
+   "type": "string",
+   "enum": [
+    "AgriCropCycle"
+   ]
+  },
+  "name": {
+   "type": "string",
+   "description": "Property. Name."
+  },
+  "dataProvider": {
+   "type": "string",
+   "description": "Property. Source of the data."
+  },
+  "season": {
+   "type": "integer",
+   "description": "Property. Harvest year."
+  },
+  "hasAgriParcel": {
+   "type": "string",
+   "format": "uri",
+   "description": "Relationship. The AgriParcel the crop was grown on."
+  },
+  "hasAgriFarm": {
+   "type": "string",
+   "format": "uri",
+   "description": "Relationship. The AgriFarm (grower) responsible."
+  },
+  "hasAgriCrop": {
+   "type": "string",
+   "format": "uri",
+   "description": "Relationship. The AgriCrop grown."
+  },
+  "precedingCrop": {
+   "type": "string",
+   "format": "uri",
+   "description": "Relationship. AgriCrop grown on the parcel the previous season (rotation)."
+  },
+  "hasGrowingSeasonWeather": {
+   "type": "string",
+   "format": "uri",
+   "description": "Relationship. Season weather summary applicable to the parcel."
+  },
+  "sowingDate": {
+   "type": "string",
+   "description": "Property. Sowing/planting date (ISO 8601 date)."
+  },
+  "harvestDate": {
+   "type": "string",
+   "description": "Property. Harvest date (ISO 8601 date)."
+  },
+  "tillageType": {
+   "type": "string",
+   "description": "Property. Primary tillage.",
+   "enum": [
+    "plough",
+    "reduced",
+    "no-till"
+   ]
+  },
+  "coverCrop": {
+   "type": "boolean",
+   "description": "Property. Cover/catch crop established."
+  },
+  "organicProduction": {
+   "type": "boolean",
+   "description": "Property. Grown under organic rules."
+  },
+  "irrigated": {
+   "type": "boolean",
+   "description": "Property. Irrigation applied."
+  },
+  "nitrogenMineralApplied": {
+   "type": "number",
+   "description": "Property. Mineral fertiliser nitrogen. Units:'kg N/ha'."
+  },
+  "phosphorusMineralApplied": {
+   "type": "number",
+   "description": "Property. Mineral P. Units:'kg P/ha'."
+  },
+  "potassiumMineralApplied": {
+   "type": "number",
+   "description": "Property. Mineral K. Units:'kg K/ha'."
+  },
+  "manureApplied": {
+   "type": "number",
+   "description": "Property. Organic manure applied. Units:'t/ha'."
+  },
+  "manureNitrogenApplied": {
+   "type": "number",
+   "description": "Property. Total N in manure. Units:'kg N/ha'."
+  },
+  "pesticideActiveIngredientApplied": {
+   "type": "number",
+   "description": "Property. Plant protection products, active ingredient. Units:'kg a.i./ha'."
+  },
+  "pesticideApplications": {
+   "type": "integer",
+   "description": "Property. Number of spraying passes."
+  },
+  "irrigationAmount": {
+   "type": "number",
+   "description": "Property. Irrigation water applied. Units:'mm'."
+  },
+  "dieselConsumption": {
+   "type": "number",
+   "description": "Property. Diesel for field operations. Units:'l/ha'."
+  },
+  "limeApplied": {
+   "type": "number",
+   "description": "Property. Agricultural lime. Units:'t/ha'."
+  },
+  "harvestedYield": {
+   "type": "number",
+   "description": "Property. Marketable raw yield; observedAt = harvest date. Units:'t/ha'."
+  },
+  "harvestBatchId": {
+   "type": "string",
+   "description": "Property. Batch identifier for field-to-product traceability."
+  },
+  "missingAttributes": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "description": "Property. Attributes the grower did not report (provenance; kept after gap filling). Remaining gaps = missingAttributes minus imputedAttributes."
+  },
+  "mlSplit": {
+   "type": "string",
+   "description": "Property. Benchmark split (synthetic data only).",
+   "enum": [
+    "train",
+    "test"
+   ]
+  },
+  "dataOrigin": {
+   "type": "string",
+   "description": "Property. Sub-property on every input/output attribute. Origin of the value.",
+   "enum": [
+    "reported",
+    "measured",
+    "imputed",
+    "estimated",
+    "syntheticTruth"
+   ]
+  },
+  "imputationMethod": {
+   "type": "string",
+   "description": "Property. Sub-property, only when dataOrigin=imputed. E.g. 'gradientBoosting', 'knn', 'cropRegionMedian'."
+  },
+  "imputationModel": {
+   "type": "string",
+   "description": "Property. Sub-property. Identifier/version of the model that produced the value."
+  },
+  "confidenceInterval": {
+   "type": "object",
+   "description": "Property. Sub-property. {'lower': n, 'upper': n, 'level': 0.8} for imputed/estimated values."
+  },
+  "contractCrop": {
+   "type": "boolean",
+   "description": "Property. Grown under the contractor's (Apetit) contract and recorded in its system; rotation crops are usually not."
+  },
+  "imputedAttributes": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   },
+   "description": "Property. Attributes added by gap filling (each carries dataOrigin=imputed, imputationMethod, imputationModel, confidenceInterval). missingAttributes is kept as provenance."
+  }
+ },
+ "required": [
+  "id",
+  "type",
+  "season",
+  "hasAgriParcel",
+  "hasAgriCrop"
+ ],
+ "x-status": "proposal",
+ "x-license": "CC-BY-4.0"
+}

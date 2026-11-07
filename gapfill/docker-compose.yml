@@ -1,0 +1,14 @@
+# Usage (from the project root, with coraine running):
+#   docker compose -f gapfill/docker-compose.yml build
+#   docker compose -f gapfill/docker-compose.yml run --rm gapfill --dry-run   # fill + validate + Excel, no writes
+#   docker compose -f gapfill/docker-compose.yml run --rm gapfill             # ... and update the entities
+# The container shares coraine's network namespace, so the broker is at http://localhost:1026 inside it.
+services:
+  gapfill:
+    build: .
+    image: apetit-ccn-gapfill:1.0
+    network_mode: "container:coraine"
+    volumes:
+      - ..:/work            # project folder: reads source-data/ and data-model/, writes results/gapfill/
+    working_dir: /work
+    command: ["--broker", "http://localhost:1026", "--tenant", "apetit_ccn_post_ml"]
