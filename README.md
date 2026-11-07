@@ -68,9 +68,28 @@ source-data/       put the source CSVs here (not in git, see source-data/README.
 
 ## Requirements
 
-- An NGSI-LD context broker (ETSI GS CIM 009). Developed against [coraine](https://coraine.readthedocs.io/); the scripts use only standard NGSI-LD calls, so Orion-LD, Scorpio or Stellio should also work.
+- An NGSI-LD context broker (ETSI GS CIM 009), see [Context broker](#context-broker).
 - Python 3.10+ for the scripts in `scripts/` (standard library; `openpyxl` for `build_pre_ml.py`).
 - Docker for the gap-filling and HESTIA containers.
+
+## Context broker
+
+Developed and tested with **[coraine](https://coraine.readthedocs.io/) 0.7.0** (Seamware, Apache-2.0): a lightweight NGSI-LD context broker written in C that implements ETSI GS CIM 009 v1.9.1. It ran as a Docker container with the in-memory store and the admin plugin:
+
+```bash
+docker run -d --name coraine -p 1026:1026 quay.io/seamware/coraine:0.7.0 \
+  --database corDB --apiPlugins admin
+```
+
+| Setting | Value |
+|---|---|
+| Image | `quay.io/seamware/coraine:0.7.0` |
+| API | NGSI-LD, port 1026 |
+| Store | `corDB` (in memory: data is lost on restart; use `--database mongoc` with MongoDB for persistence) |
+| Multi-tenancy | `NGSILD-Tenant` header; tenants `apetit_ccn` (as reported) and `apetit_ccn_post_ml` (gap filled) |
+| @context | sent inline with every write (`data-model/context.jsonld` + NGSI-LD core context v1.8) |
+
+The scripts use only standard NGSI-LD operations (batch upsert / update / delete, paged entity queries, `/types`), so other NGSI-LD brokers such as the FIWARE Generic Enablers **Orion-LD**, **Scorpio** or **Stellio** should work by changing `--broker` (and `network_mode` in `gapfill/docker-compose.yml`). They have not been tested here. Behaviour that differs between brokers and is handled in the code: result order, one-item arrays returned as plain values, and sub-attributes stored as Properties.
 
 ## Get the data
 
